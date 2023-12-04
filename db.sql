@@ -1,45 +1,129 @@
-CREATE DATABASE dataware2;
-
-create TABLE equipe(
-	id_equipe int(10) PRIMARY KEY auto_increment,
-   	nom_equipe char(100),
-   	date_creation date
+CREATE TABLE `utilisateur` (
+  `id` int(10) PRIMARY KEY AUTO_INCREMENT,
+  `nom` varchar(100) ,
+  `prenom` varchar(100) ,
+  `email` varchar(100),
+  `pass` varchar(100) ,
+  `tel` int(10) UNIQUE,
+  `statut` varchar(100) ,
+  `role` varchar(100)
 );
 
-create TABLE projet(
-	id_pro int(10) PRIMARY KEY auto_increment,
-   	nom_pro char(100),
-	descrp_pro char(200)
+CREATE TABLE `projet` (
+  `id_pro` int(10) PRIMARY KEY AUTO_INCREMENT,
+  `nom_pro` varchar(100) ,
+  `descrp_pro` varchar(200) 
 );
 
-create TABLE utilisateur(
-    id int(10) PRIMARY KEY  auto_increment ,
-    nom char(100),
-    prenom char(100),
-    email varchar(100),
-    pass char(100),
-    tel  int(10),
-    statut  char(100),
-    role  char(100),
-    equipe int(10),
-    FOREIGN KEY (equipe) REFERENCES equipe(id_equipe),
+CREATE TABLE `equipe` (
+  `id_equipe` int(10) PRIMARY KEY AUTO_INCREMENT ,
+  `nom_equipe` varchar(100) ,
+  `date_creation` date
+);
+
+CREATE TABLE `question` (
+   `id_qst` int(10) PRIMARY KEY AUTO_INCREMENT ,
+   `titre_qst` varchar(100) ,
+   `descrp_qst` varchar(100) ,
+   `date_qst` date ,
+   `archive_qst` boolean,
+   `like_qst` int(10),
+   `dislike_qst` int(10)
+);
+
+CREATE TABLE `reponse` (
+   `id_rep` int(10) PRIMARY KEY AUTO_INCREMENT ,
+   `descrp_rep` varchar(100) ,
+   `date_rep` date ,
+   `archive_rep` boolean,
+   `statut_rep` boolean,
+   `like_rep` int(10),
+   `dislike_rep` int(10)
+);
+
+CREATE TABLE `tags` (
+   `id_tag` int(10) PRIMARY KEY AUTO_INCREMENT ,
+   `nom_tag` varchar(100)
+);
+
+CREATE TABLE `tag_qst` (
+   `id_tq` int(10) PRIMARY KEY AUTO_INCREMENT
 );
 
 ALTER TABLE utilisateur
+add equipe int(10),
+ADD FOREIGN KEY (equipe) REFERENCES equipe(id_equipe);
+
+ALTER TABLE utilisateur
 add projet int(10),
-FOREIGN KEY (projet) REFERENCES projet(id_pro);
+ADD FOREIGN KEY (projet) REFERENCES projet(id_pro);
+
+ALTER TABLE equipe
+add id_pro int(10),
+ADD FOREIGN KEY (id_pro) REFERENCES projet(id_pro);
+
+ALTER TABLE question
+add id_pro int(10),
+ADD FOREIGN KEY (id_pro) REFERENCES projet(id_pro)
+ON DELETE CASCADE;
+
+ALTER TABLE question
+add id_user int(10),
+ADD FOREIGN KEY (id_user) REFERENCES utilisateur(id);
+
+ALTER TABLE reponse
+add id_user int(10),
+ADD FOREIGN KEY (id_user) REFERENCES utilisateur(id);
+
+ALTER TABLE reponse
+add id_qst int(10),
+ADD FOREIGN KEY (id_qst) REFERENCES question(id_qst)
+ON DELETE CASCADE;
+
+ALTER TABLE tags
+add id_qst int(10),
+ADD FOREIGN KEY (id_qst) REFERENCES question(id_qst);
+
+ALTER TABLE tag_qst
+add id_qst int(10),
+ADD FOREIGN KEY (id_qst) REFERENCES question(id_qst);
+
+ALTER TABLE tag_qst
+add id_tag int(10),
+ADD FOREIGN KEY (id_tag) REFERENCES tags(id_tag);
+
+---- FOREIGN KEYS ----
 
 
-insert into projet VALUES (1,'Travigo travel','amelioration d'un site web de voyage'),(2,'Restaurant pizza','maquetter et mettre en oeuvre site web de pizza restaurant'),(3,'Salle de sport','realiser et implementer un site web de salle de sport'),(4,'Gamebit','concevoir un site d'une société de gaming'),(5,'Datware','gerer le personnel de l'entreprise dataware');
+-- user
+  `equipe` int(10),
+  `projet` int(10),
 
-insert into equipe VALUES (1,'codecrafters','2023-5-10'),(2,'nightcrawlers','2023-7-9'),(3,'thefive','2023-10-7'),(4,'codex','2023-11-23'),(5,'ventures','2023-10-11');
+-- equipe
+  `id_pro` int(10)
 
-INSERT INTO utilisateur (id,nom,prenom,email,pass,tel,statut,role) VALUES
-(1,'Sebti','Douae','douaesb123@gmail.com','douae123',0664589784,'active','ProductOwner'),
-(2,'OLM','Yassir','yassirolm123@gmail.com','yassir123',0615878477,'active','membre'),
-(3,'Toto','Mouad','mouadtoto123@gmail.com','Mouad123',0687459165,'active','membre'),
-(4,'Houas','Chaimae','chaimaeh123@gmail.com','chaimae123',0684516578,'active','membre'),
-(5,'Daali','Mohamed','mohamedda123@gmail.com','Mohamed123',0616457899,'active','membre');
+-- question
+  `id_user` int(10),
+  `id_pro` int(10)
+
+-- reponse
+  `id_user` int(10),
+  `id_qst` int(10)
+
+-- tags
+  `id_qst` int(10)
+
+--tag_qst
+  `id_tag` int(10),
+  `id_qst` int(10)
+
+
+
+
+
+
+
+
 
 
 
