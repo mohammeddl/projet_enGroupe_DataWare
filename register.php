@@ -19,33 +19,21 @@
                     <?php
                     require('connection.php');
                     if (isset($_REQUEST['nom'], $_REQUEST['prenom'], $_REQUEST['email'], $_REQUEST['pass'], $_REQUEST['tel'])) {
-                        // récupérer le nom d'utilisateur et supprimer les antislashes ajoutés par le formulaire
-                        $username = stripslashes($_REQUEST['nom']);
-                        $username = mysqli_real_escape_string($conn, $username);
+                        $username = $_REQUEST['nom'];
+                        $surname = $_REQUEST['prenom'];
+                        $email = $_REQUEST['email'];
+                        $password = $_REQUEST['pass'];
+                        $tel = $_REQUEST['tel'];
 
-                        $surname = stripslashes($_REQUEST['prenom']);
-                        $surname = mysqli_real_escape_string($conn, $surname);
-                        // récupérer l'email et supprimer les antislashes ajoutés par le formulaire
-                        $email = stripslashes($_REQUEST['email']);
-                        $email = mysqli_real_escape_string($conn, $email);
-                        // récupérer le mot de passe et supprimer les antislashes ajoutés par le formulaire
-                        $password = stripslashes($_REQUEST['pass']);
-                        $password = mysqli_real_escape_string($conn, $password);
+                        $query = "INSERT INTO `utilisateur` (nom, prenom, email, pass, tel, statut, role)
+                                  VALUES ('$username','$surname', '$email','$password','$tel','active','membre')";
 
-                        $tel = stripslashes($_REQUEST['tel']);
-                        $tel = mysqli_real_escape_string($conn, $tel);
-                        //requéte SQL + mot de passe crypté
-                        $query = "INSERT into `utilisateur` (nom, prenom, email, pass, tel,statut,role)
-              VALUES ('$username','$surname', '$email','$password','$tel','active','membre')";
-            //   VALUES ('$username','$surname', '$email', '" . hash('sha256', $password) . "','$tel','active','membre')";
-            
-            // Exécuter la requête sur la base de données
                         $res = mysqli_query($conn, $query);
                         if ($res) {
-                            echo "<div class='sucess'>
-                                <h3>Vous êtes inscrit avec succès.</h3>
-                                <p>Cliquez ici pour vous <a href='login.php'>connecter</a></p>
-                                </div>";
+                            echo "<div class='success'>
+                                    <h3>Vous êtes inscrit avec succès.</h3>
+                                    <p>Cliquez ici pour vous <a href='login.php'>connecter</a></p>
+                                  </div>";
                         }
                     } else {
                     ?>
