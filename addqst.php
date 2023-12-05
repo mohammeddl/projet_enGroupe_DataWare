@@ -2,6 +2,8 @@
 include('connection.php');
 
 $title = $descrp = "";
+session_start();
+
 if (isset($_POST['askqst'])) {
     if (isset($_POST['titre_qst'])) {
         $title =  $_POST['titre_qst'];
@@ -10,7 +12,9 @@ if (isset($_POST['askqst'])) {
         $descrp =  $_POST['descrp_qst'];
     }
 
-    $sql = "INSERT INTO question (titre_qst, descrp_qst, date_qst) VALUES ('$title', '$descrp', NOW())";
+    $id = $_SESSION['id'];
+
+    $sql = "INSERT INTO question (titre_qst, descrp_qst, date_qst, id_user) VALUES ('$title', '$descrp', DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s'), '$id')";
     
     $result = mysqli_query($conn, $sql);
     if ($result) {
@@ -20,6 +24,3 @@ if (isset($_POST['askqst'])) {
     }
 }
 ?>
-
-  
-

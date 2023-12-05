@@ -418,7 +418,6 @@ if (!isset($_SESSION["email"])) {
                                             $sql = "SELECT * FROM utilisateur 
                                                         INNER JOIN equipe ON utilisateur.equipe = equipe.id_equipe 
                                                         WHERE utilisateur.role = 'membre' AND equipe.id_equipe = $selectedTeamId";
-                                            // echo "Generated SQL: $sql<br>";
 
                                         } else {
                                             $sql = "SELECT * FROM utilisateur 
@@ -475,6 +474,8 @@ if (!isset($_SESSION["email"])) {
             document.getElementById('equipeTrigger').classList.remove("hidden");
             document.getElementById('equipeModal').classList.remove("hidden");
         });
+
+        
         document.getElementById('addmembre').addEventListener('click', function() {
             document.getElementById('membreTrigger').classList.remove("hidden");
             document.getElementById('membreModal').classList.remove("hidden");
