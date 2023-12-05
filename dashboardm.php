@@ -37,7 +37,10 @@ if (!isset($_SESSION["email"])) {
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
                 <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
                     <li>
-                        <a href="#" class="mr-40 py-2 px-3 text-black rounded md:bg-transparent md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Member Account</a>
+                        <form action="dashboardm.php" method="post">
+                            <input type="submit" value="Community" name="communty" class="cursor-pointer">
+                            <input type="submit" value="mydashboard" name="dash" class="cursor-pointer">
+                        </form>
                     </li>
                     <li>
                         <a href="logout.php" class="block py-2 px-3 text-pink-500 rounded hover:bg-blue-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Deconnexion</a>
@@ -46,155 +49,15 @@ if (!isset($_SESSION["email"])) {
             </div>
         </div>
     </nav>
-    <h1 class=" ml-24 mb-4 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Bienvenue</h1>
 
-    <!-- Affichage mes projets  -->
-    <section class="equipe">
-        <div class="bg-gray-100 py-10">
-
-            <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <h2 class="mb-4 text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Mes projets</h2>
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle">
-                            <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
-                                <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Id Projet</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Nom Porjet</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-
-                                        <tr>
-
-                                            <?php
-                                            // $sql = "SELECT * FROM projet inner join  utilisateur  on utilisateur.projet = projet.id_pro and utilisateur.role = 'ScrumMaster' " ;
-
-                                            // $sql = "SELECT * FROM utilisateur where id=$id";
-                                            $sql = "SELECT projet.id_pro, projet.nom_pro, projet.descrp_pro
-                                            FROM utilisateur
-                                            JOIN equipe ON utilisateur.equipe = equipe.id_equipe
-                                            JOIN projet ON equipe.id_pro = projet.id_pro
-                                            WHERE utilisateur.id = $id;
-                                            ";
-
-
-                                            $result = mysqli_query($conn, $sql);
-
-                                            if ($result) {
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-center font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                                                        <?php
-                                                        echo $row["id_pro"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["nom_pro"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["descrp_pro"];
-                                                        ?>
-                                                    </td>
-                                        </tr>
-                                <?php
-                                                }
-                                                mysqli_free_result($result);
-                                            } else {
-                                                echo "Error: " . mysqli_error($conn);
-                                            }
-                                ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Affichage mes equipes  -->
-    <section class="equipe">
-        <div class="bg-gray-100 py-10">
-
-            <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <h2 class="mb-4 text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Mes equipes</h2>
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle">
-                            <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
-                                <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Id Equipe</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Nom Equipe</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Date de Creation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-
-                                        <tr>
-
-                                            <?php
-                                            // $sql = "SELECT * FROM equipe inner join  utilisateur  on utilisateur.equipe = equipe.id_equipe" ;
-                                            $sql = "SELECT equipe.id_equipe, equipe.nom_equipe, equipe.date_creation
-                                            FROM utilisateur
-                                            JOIN equipe ON utilisateur.equipe = equipe.id_equipe
-                                            WHERE utilisateur.id = $id;
-                                            ";
-
-                                            // $sql = "SELECT * FROM equipe";
-                                            $result = mysqli_query($conn, $sql);
-
-                                            if ($result) {
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-center font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                                                        <?php
-                                                        echo $row["id_equipe"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["nom_equipe"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["date_creation"];
-                                                        ?>
-                                                    </td>
-                                        </tr>
-                                <?php
-                                                }
-                                                mysqli_free_result($result);
-                                            } else {
-                                                echo "Error: " . mysqli_error($conn);
-                                            }
-                                ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <?php
+    if (isset($_POST['communty'])) {
+        include 'C:\xampp\htdocs\projet_enGroupe_DataWare\community.php';
+    }
+    if (isset($_POST['dash'])) {
+        include('C:\xampp\htdocs\projet_enGroupe_DataWare\dashboradmember.php');
+    }
+    ?>
 </body>
 
 </html>
