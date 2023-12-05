@@ -1,4 +1,11 @@
-<?php include "connection.php"; ?>
+<?php include "connection.php"; 
+$sql = "SELECT titre_qst,descrp_qst,date_qst  FROM question
+";
+$result = mysqli_query($conn, $sql);
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,32 +23,34 @@
 
 <body class = "body bg-gradient-to-t from-gray-100 to-gray-100">
     
-    <div class = " w-full z-30 flex  bg-slate-600 p-2 items-center justify-center h-16 px-10 shadow-lg ">
+    <div class = " w- z-30 flex  bg-slate-600 p-2 items-center ju  h-16 px-10 shadow-lg ">
         <!-- SPACER -->
-        <div class = "grow h-full flex items-center justify-center"></div>
+        <div class = "fixed grow h-full flex items-center justify-center"></div>
         <nav class = "flex justify-between px-5 py-3 text-gray-700  rounded-lg " aria-label="Breadcrumb">
         <ol class = " inline-flex items-center  space-x-1 md:space-x-3">
                 <li>
                 <form action="" class="relative mx-auto w-max">
                         <input type="search" 
-                         class="peer cursor-pointer relative z-10 h-10 w-10 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-grey-500 focus:pl-16 focus:pr-4" />
-                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-y-0 my-auto h-8 w-12  border-grey-100 stroke-gray-500 px-3.5 peer-focus:border-gey-500 peer-focus:stroke-grey-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                         class="peer cursor-pointer relative z-10 h-10 w-11 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-grey-500 focus:pl-16 focus:pr-4" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-y-0 my-auto h- w-12 flex    border-grey-100 stroke-gray-500 px-3.5 peer-focus:border-gey-500 peer-focus:stroke-grey-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </form>
                 </li>
-                 </ol>   
-        </nav>
-
-        <div class = "flex-none h-full text-center flex items-center justify-center">
+                 </ol>
+                 <div class = "flex-none h-full text-center flex items-center justify-center">
                 <div class = "flex space-x-3 items-center px-3">
 
                 <a href="#" class="text-red rounded-full hover:before:bg-red relative h-[50px] w-40 overflow-hidden border-none  bg-[#1E293B] px-3 py-3 text-red-500 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-red-500 before:transition-all before:duration-500 hover:text-white hover:shadow-red-500 hover:before:left-0 hover:before:w-full"><span class="relative z-10 text-white font-bold">profile</span></a> 
                 </div>
                 
-        </div>
+        </div>   
+        </nav>
+
+        
     </div>
-    <aside class = "w-60 -translate-x-48  transition transform ease-in-out duration-1000 z-50 flex h-[100vh] w-[10%] bg-sky-400 shadow-xl ">
+
+    <aside class = "fixed w-60 -translate-x-48  transition transform ease-in-out duration-1000 z-50 flex h-[100vh] w-[10%] bg-sky-400 shadow-xl ">
        <!-- open sidebar button -->
         <div class = "max-toolbar translate-x-24 scale-x-0  -right-6 transition transform ease-in duration-300 flex items-center justify-between bg-grey-100 shadow-lg  absolute top-2 rounded-full h-12">
             
@@ -60,7 +69,7 @@
             </svg>
         </div>
         <!-- MAX SIDEBAR-->
-        <div class= "max hidden text-white mt-20 flex-col space-y-2 w-full h-[calc(100vh)]">
+        <div class= "fixed max hidden text-white mt-20 flex-col space-y-2 w-full h-[calc(100vh)]">
             <div class =  "hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" class="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -134,6 +143,26 @@
          </div>
       </form>
    </div>
+<!-- ..................................... -->
+<?php
+if ($result) {
+      while ($row = mysqli_fetch_assoc($result)) {
+?>
+<div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"><?php echo $row["titre_qst"]   ?></h5>
+    </a>
+    <p class="mb-3 font-normal text-gray-500 dark:text-gray-400"> <?php echo $row["descrp_qst"]   ?> </p>
+    <p><?php echo $row["date_qst"]   ?></p>
+</div>
+<?php
+                        }
+                        mysqli_free_result($result);
+                    } else {
+                        echo "Error: " . mysqli_error($conn);
+                    }
+        ?>
+
 
    
 
