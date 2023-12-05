@@ -1,7 +1,7 @@
 <?php
 
 $servername = "localhost";
-$database = "dataware2";
+$database = "dw";
 $username = "root";
 $password = "";
 

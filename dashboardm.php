@@ -9,6 +9,15 @@ if (!isset($_SESSION["email"])) {
     header("Location: login.php");
     exit();
 }
+
+
+$sqlUser = "SELECT nom FROM utilisateur WHERE id = $id";
+$resultUser = mysqli_query($conn, $sqlUser);
+
+if ($resultUser) {
+    $rowUser = mysqli_fetch_assoc($resultUser);
+    $userName = $rowUser["nom"];
+}
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +55,7 @@ if (!isset($_SESSION["email"])) {
             </div>
         </div>
     </nav>
-    <h1 class=" ml-24 mb-4 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Bienvenue</h1>
+    <h1 class=" ml-24 mb-4 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Bienvenue <?php echo $userName ?></h1>
 
     <!-- Affichage mes projets  -->
     <section class="equipe">
