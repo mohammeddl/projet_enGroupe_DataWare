@@ -179,6 +179,8 @@ include('addqst.php');
                                 Enter a description of your question
                                 <textarea class=" rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="descrp_qst" placeholder='give a description of your question'></textarea>
                             </div>
+                            <input type="hidden" name="id_pro" value="<?php echo $row_pro['projet']; ?>">
+
                             <div class="w-full md:w-full flex items-center justify-center md:w-full p-4">
                                 <div class="-mr-1">
                                     <input type='submit' name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100" value='send'>
@@ -231,7 +233,7 @@ include('addqst.php');
                             $filt = $filter;
                         }
                         if ($filt) {
-                            $sql = "SELECT id_qst,titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $idpro";
+                            $sql = "SELECT id_qst,titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $idpro ORDER BY date_qst desc";
                         } elseif (!$filt) {
                         $sql = "SELECT id_qst,titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc";
                     }
