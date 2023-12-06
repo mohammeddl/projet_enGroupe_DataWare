@@ -86,7 +86,42 @@ include('addqst.php');
                     Graph
                 </div>
             </div>
+            <div class="hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+                </svg>
+                <button>
+                    filter by Projects
+                </button>
+            </div>
+            <div>
+                <form action="newpage.php" method="post">
+                    <?php
+                    $stmt = mysqli_prepare($conn, "SELECT id_pro, nom_pro FROM projet");
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt, $id, $projetnom);
+                    ?>
+                    <?php
+                    echo "<button type='submit' name='filterall'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>All</button>";
+                    while (mysqli_stmt_fetch($stmt)) {
+                        echo "<div class='flex items-center space-x-3'>
+                      <button type='submit' name='filterproj' value='$id' class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>$projetnom</button>
+                  </div>";
+                    }
+                    ?>
+                </form>
+                <?php
+                $filter = false;
+                if (isset($_POST['filterproj'])) {
+                    $idpro = $_POST['filterproj'];
+                    $filter = true;
+                } elseif (isset($_POST['filterall'])) {
+                    $filter = false;
+                }
+                ?>
+            </div>
         </div>
+        
         <!-- MINI SIDEBAR-->
         <div class="mini mt-20 flex flex-col space-y-2 w-full h-[calc(100vh)]">
             <div class="hover:ml-4 justify-end pr-5 text-white  hover:text-blue-500 w-full bg-[#1E293B] p-3 rounded-full transform ease-in-out duration-300 flex">
@@ -190,8 +225,16 @@ include('addqst.php');
                 <div class="mt-8 space-y-8">
                     <div>
                         <?php
+                        
+                        // $sql = "SELECT id_qst,titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc";
+                        if (isset($filter)) {
+                            $filt = $filter;
+                        }
+                        if ($filt) {
+                            $sql = "SELECT id_qst,titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $idpro";
+                        } elseif (!$filt) {
                         $sql = "SELECT id_qst,titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc";
-
+                    }
                         $result = mysqli_query($conn, $sql);
 
                         if ($result) {
