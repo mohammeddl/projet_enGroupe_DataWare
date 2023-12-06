@@ -3,7 +3,7 @@
 $servername = "localhost";
 $database = "dw";
 $username = "root";
-$password = "";
+$password = "dwpass@123D";
 
 $conn = mysqli_connect($servername, $username, $password, $database);
 
