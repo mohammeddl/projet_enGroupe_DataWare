@@ -85,15 +85,6 @@ if ($resultUser) {
                                     <tbody class="divide-y divide-gray-200 bg-white">
 
                                         <tr>
-
-    <?php
-    if (isset($_POST['communty'])) {
-        include 'C:\xampp\htdocs\projet_enGroupe_DataWare\community.php';
-    }
-    if (isset($_POST['dash'])) {
-        include('C:\xampp\htdocs\projet_enGroupe_DataWare\dashboradmember.php');
-    }
-    ?>
 </body>
 
 </html>
