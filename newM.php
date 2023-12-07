@@ -1,6 +1,5 @@
 <?php
 include "connection.php";
-include('addqst.php');
 ?>
 
 <!DOCTYPE html>
@@ -88,40 +87,6 @@ include('addqst.php');
                     Graph
                 </div>
             </div>
-            <div class="hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                </svg>
-                <button>
-                    filter by Projects
-                </button>
-            </div>
-            <div>
-                <form action="newpage.php" method="get">
-                    <?php
-                    $stmt = mysqli_prepare($conn, "SELECT id_pro, nom_pro FROM projet");
-                    mysqli_stmt_execute($stmt);
-                    mysqli_stmt_bind_result($stmt, $id, $projetnom);
-                    ?>
-                    <?php
-                    echo "<button type='submit' name='filterall'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>All</button>";
-                    while (mysqli_stmt_fetch($stmt)) {
-                        echo "<div class='flex items-center space-x-3'>
-                      <button type='submit' name='filterproj' value='$id' class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>$projetnom</button>
-                  </div>";
-                    }
-                    ?>
-                </form>
-                <?php
-                $filter = false;
-                if (isset($_POST['filterproj'])) {
-                    $idpro = $_POST['filterproj'];
-                    $filter = true;
-                } elseif (isset($_POST['filterall'])) {
-                    $filter = false;
-                }
-                ?>
-            </div>
         </div>
         <!-- MINI SIDEBAR-->
         <div class="mini mt-20 flex flex-col space-y-2 w-full h-[calc(100vh)]">
@@ -165,38 +130,7 @@ include('addqst.php');
         </nav>
 
         <br>
-        <section class="flex flex-col justify-center items-center w-full">
-            <button id="addqst" type="button" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium mb-4 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Ask Question</button>
-            <!-- <div id="qstTrigger" class="hidden"></div> -->
-            <div id="qstModal" class="hidden">
-                <div>
-                    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" method="post" action="">
-                        <div class="flex flex-col flex-wrap -mx-3 mb-6">
-                            <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">what is your question ?</h2>
-                            <div class="relative mt-2 rounded-md">
-                                <input type="text" name="titre_qst" id="" class="block rounded-md border border-gray-400 w-full text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="be specific in ur question">
-                            </div>
-                            <div class="w-full md:w-full px-3 mb-2 mt-2">
-                                Enter a description of your question
-                                <textarea class=" rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="descrp_qst" placeholder='give a description of your question'></textarea>
-                            </div>
-                            <input type="hidden" name="id_pro" value="<?php echo $row_pro['projet']; ?>">
 
-                            <div class="w-full md:w-full flex items-center justify-center md:w-full p-4">
-                                <div class="-mr-1">
-                                    <input type='submit' name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100" value='send'>
-                                </div>
-                            </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="">
-                <button type="submit" class="block py-2 px-3 text-pink-500 font-bold rounded hover:bg-blue-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"><a href="newpage.php" class="">cancel</a>
-                </button>
-            </div>
-
-        </section>
         <!-- --------------------------------------------------------------- -->
 
 
@@ -212,19 +146,12 @@ include('addqst.php');
                 </div>
 
                 <div class="mt-8 space-y-8">
-                    <div id="result">
+                    <div id="res">
                     
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- <div class="container">
-            <h2 class="text-center">AJAX Pagination using Jquery AJAX</h2>
-            <br />
-            <div id="result" class="flex flex-col justify-center m-auto bg-white px-6 py-6 rounded-4 shadow-lg w-2/3">
-            </div>
-        </div> -->
 
 
         <script type="text/javascript">
@@ -234,13 +161,13 @@ include('addqst.php');
 
             function showdata(page) {
                 $.ajax({
-                    url: 'pagination.php',
+                    url: 'pageM.php',
                     method: 'post',
                     data: {
                         page_no: page
                     },
                     success: function(result) {
-                        $("#result").html(result);
+                        $("#res").html(result);
                     }
                 });
             }
@@ -307,11 +234,6 @@ include('addqst.php');
                 }
 
             }
-
-            document.getElementById('addqst').addEventListener('click', function() {
-                // document.getElementById('qstTrigger').classList.remove("hidden");
-                document.getElementById('qstModal').classList.toggle("hidden");
-            });
         </script>
 
 
