@@ -11,7 +11,9 @@ if (isset($_POST['askqst'])) {
     }
 
     $sql = "INSERT INTO question (titre_qst, descrp_qst, date_qst) VALUES ('$title', '$descrp', NOW())";
-    
+    // if(!empty($_POST('tag'))){
+    //   $tag = 
+    // }
     $result = mysqli_query($conn, $sql);
     if ($result) {
         header('Location: newpage.php');

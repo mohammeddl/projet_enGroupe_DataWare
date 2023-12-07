@@ -1,3 +1,46 @@
+<div class="content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
+        <nav class="flex justify-between px-5 py-3 text-gray-700  items-center rounded-lg bg-gray-50 shadow-lg " aria-label="Breadcrumb">
+        <a href="newpage.php"><img src="img/backarrow.svg" class="w-[10%]" alt="back"></a>
+            <ol class=" inline-flex items-center  space-x-1 md:space-x-3">
+                <li>
+                    <form action="config.php" class="relative mx-auto w-max" id="mysearch">
+                        <input type="search" id="search" class="peer cursor-pointer relative z-10 h-10 w-10 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-grey-500 focus:pl-50 focus:pr-4" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-y-0 my-auto h-8 w-12  border-grey-100 stroke-gray-500 px-3.5 peer-focus:border-gey-500 peer-focus:stroke-grey-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </form>
+
+                </li>
+            </ol>
+        </nav>
+        <div class="h-[20vh]  mb-10 flex flex-col " id="searchdiv">
+        </div>
+        <script>
+            const form = document.getElementById('mysearch');
+            const searchbar = document.getElementById('search');
+            const secondform = document.getElementById('myresult');
+            var output = document.getElementById('searchdiv');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+            });
+            searchbar.addEventListener('keydown', search);
+
+            function search() {
+                var titre = searchbar.value;
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "config.php?search=" + titre, true);
+                xhr.onload = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log(xhr.response);
+                        output.innerHTML = xhr.response;
+                    } else if (titre == '') {
+                        output.innerHTML = '';
+                    }
+
+                }
+                xhr.send();
+            }
+        </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 <?php
@@ -5,8 +48,8 @@ include 'connection.php';
 if (isset($_GET['idqst'])) {
     $id = $_GET['idqst'];
 }
+error_reporting(0);
 $sql = "SELECT titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_qst=$id";
-$sql2 = "SELECT titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_qst=$id";
 $result = mysqli_query($conn, $sql);
 
 if ($result) {

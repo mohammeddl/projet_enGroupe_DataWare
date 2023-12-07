@@ -249,29 +249,36 @@ $id = $_SESSION['id'];
                                 Enter a description of your question
                                 <textarea class=" rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="descrp_qst" placeholder='give a description of your question'></textarea>
                             </div>
+                            <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add Tags</h2>
+                            <div class="flex flex-row items-center relative mt-2 rounded-md">
+                                <span class="flex flex-wrap py-5" id="tagdiv"></span><img class="w-[8%]" src="img/plus.svg" alt="add tag" id="addtag">
+                            </div>
                             <div class="w-full md:w-full flex items-center justify-center md:w-full p-4">
                                 <div class="-mr-1">
                                     <input type='submit' name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100" value='send'>
                                 </div>
                             </div>
+
                     </form>
                 </div>
             </div>
-
             <div class="">
                 <button type="submit" class="block py-2 px-3 text-pink-500 font-bold rounded hover:bg-blue-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"><a href="newpage.php" class="">cancel</a>
                 </button>
             </div>
 
         </section>
+        <script>
+            const addtag = document.getElementById('addtag');
+            const tagdiv = document.getElementById('tagdiv');
 
+            addtag.addEventListener("click", add);
 
-
-
-
-
-
-
+            function add() {
+                let tag = ` <input type="text" name="tag" id="taginput" class="block rounded-md border border-gray-400 w-[20%] text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="add tag">`
+                tagdiv.innerHTML += tag;
+            }
+        </script>
         <!-- --------------------------------------------------------------- -->
 
 
