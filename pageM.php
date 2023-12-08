@@ -3,15 +3,6 @@ include "connection.php";
 $limit_page = 5;
 $page = isset($_POST['page_no']) ? $_POST['page_no'] : 1;
 $offset = ($page - 1) * $limit_page;
-if(isset($_POST["submitSolution"])){
-    $id_rep = $_POST['id_rep'];
-    $statut_rep = $_POST['statut_rep'];
-    $newStatus = ($statut_rep == 1) ? 0 : 1;
-    $reqSolution = "UPDATE reponse SET statut_rep = $newStatus WHERE id_rep = $id_rep";
-    $resultSolution = mysqli_query($conn, $reqSolution);
-    };
-    
-
 session_start();
 $id = $_SESSION['id'];
 
@@ -20,6 +11,7 @@ $output = "";
 $row = mysqli_num_rows($fetch_query);
 
 if ($row > 0) {
+    $i =0;
     while ($res = mysqli_fetch_array($fetch_query)) {
         $output .= "<div class='flex justify-between '>
                             <div class='flex gap-4'>
@@ -120,6 +112,7 @@ if ($row > 0) {
 
         if ($rw) {
             while ($r = mysqli_fetch_assoc($rw)) {
+
                 $output .= "<div class='flex justify-between '>
                                                     <div class='flex items-start mt-3 ml-14 gap-4'>
                                                         <div>
@@ -147,14 +140,12 @@ if ($row > 0) {
 
                 $output .= "</p>
                                                     </div>
-                                                    <form class='flex gap-5' method='POST'>";
+                                                    <form class='flex gap-5' action='' method='get'>";
                                                     $output .= "<input type='hidden' name='id_rep' value='{$r['id_rep']}'>";
                                                     $output .= "<input type='hidden' name='statut_rep' value='{$r['statut_rep']}'>";
-                                                    
 
-                    
-                                    
-                                                    $output .= "<button type='submit' name='submitSolution'><svg xmlns='http://www.w3.org/2000/svg' height='16' width='18' viewBox='0 0 576 512'><path fill='#119c14' d='M96 80c0-26.5 21.5-48 48-48H432c26.5 0 48 21.5 48 48V384H96V80zm313 47c-9.4-9.4-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L409 161c9.4-9.4 9.4-24.6 0-33.9zM0 336c0-26.5 21.5-48 48-48H64V416H512V288h16c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336z'></path></svg></button>
+
+                                                    $output .= "<a href='statut.php?id_rep={$r['id_rep']}'><svg xmlns='http://www.w3.org/2000/svg' height='16' width='18' viewBox='0 0 576 512'><path fill='#119c14' d='M96 80c0-26.5 21.5-48 48-48H432c26.5 0 48 21.5 48 48V384H96V80zm313 47c-9.4-9.4-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L409 161c9.4-9.4 9.4-24.6 0-33.9zM0 336c0-26.5 21.5-48 48-48H64V416H512V288h16c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336z'></path></svg> </a>
 
                                                     
                                                 </form>
@@ -202,7 +193,7 @@ if ($row > 0) {
                                                     </div>
 
                                                    </div>";
-
+                                                   
 ?>
                 <!-- end answer  -->
         <?php
@@ -213,6 +204,7 @@ if ($row > 0) {
         </div>
 
         </section>
+
 
 <?php
     }
