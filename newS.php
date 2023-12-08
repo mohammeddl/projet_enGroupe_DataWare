@@ -1,8 +1,6 @@
 <?php
 include "connection.php";
 include('addqst.php');
-
-
 ?>
 
 <!DOCTYPE html>
@@ -107,25 +105,20 @@ include('addqst.php');
                     ?>
                     <?php
                     echo "<button type='submit' name='filterall'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>All</button>";
-                    $i=0;
                     while (mysqli_stmt_fetch($stmt)) {
                         echo "<div class='flex items-center space-x-3'>
-                        <input type='text' value='$id' name='filpro$i' class='hidden' >
-                      <button type='submit' name='filterproj' value='$i'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' >$projetnom</button>
+                      <button type='submit' name='filterproj' value='$id' class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>$projetnom</button>
                   </div>";
-                  $i++;
                     }
-                    
                     ?>
                 </form>
                 <?php
-                $_SESSION['type']='filterall';
-                if (isset($_GET['filterproj'])) {
-                    $i = $_GET['filterproj'];
-                    $_SESSION['idpro']=$_GET['filpro'.$i];
-                    $_SESSION['type']='filterd';
-                } elseif (isset($_GET['filterall'])) {
-                    $_SESSION['type']='filterall';
+                $filter = false;
+                if (isset($_POST['filterproj'])) {
+                    $idpro = $_POST['filterproj'];
+                    $filter = true;
+                } elseif (isset($_POST['filterall'])) {
+                    $filter = false;
                 }
                 ?>
             </div>
@@ -241,7 +234,7 @@ include('addqst.php');
 
             function showdata(page) {
                 $.ajax({
-                    url: 'pagination.php',
+                    url: 'pageS.php',
                     method: 'post',
                     data: {
                         page_no: page

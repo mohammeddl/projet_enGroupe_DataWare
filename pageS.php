@@ -6,15 +6,16 @@ $page = isset($_POST['page_no']) ? $_POST['page_no'] : 1;
 
 $offset = ($page - 1) * $limit_page;
 
-              
+                $filter = false;
+                if (isset($_POST['filterproj'])) {
+                    $idpro = $_POST['filterproj'];
+                    $filter = true;
+                } elseif (isset($_POST['filterall'])) {
+                    $filter = false;
+                }
                 
-if($_SESSION['type']==='filterall'){
-    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc limit $offset, $limit_page");
-}else if($_SESSION['type']==='filterd'){
-    $id = $_SESSION['idpro'];
-    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $id  ORDER BY date_qst desc limit $offset, $limit_page");
-}
 
+$fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc limit $offset, $limit_page");
 $output = "";
 $row = mysqli_num_rows($fetch_query);
 
@@ -41,6 +42,10 @@ if ($row > 0) {
                                 <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                     <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
                                 </svg>
+                                <form action='archive.php' method='post'>";
+                                    $output .="<input type='hidden' name='id_utilisateur' value='{$row['id_qst']}'>";
+                                    $output .="<input type='submit' value='Archiver'>";
+                                    $output .="</form>
                                 <svg class='h-5 w-5 text-black' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                                     <polyline points='3 6 5 6 21 6' />
                                     <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
