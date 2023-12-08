@@ -7,7 +7,7 @@ $offset = ($page - 1) * $limit_page;
 session_start();
 $id = $_SESSION['id'];
 
-$fetch_query = mysqli_query($conn, "SELECT * FROM  question inner join reponse  inner join utilisateur on utilisateur.id = question.id_user where reponse.id_qst = question.id_qst and reponse.id_user = $id ORDER BY date_qst desc limit $offset, $limit_page");
+$fetch_query = mysqli_query($conn, "SELECT Distinct question.id_qst ,question.titre_qst ,question.descrp_qst ,question.date_qst, nom,prenom,date_qst FROM  question join reponse on  question.id_qst = reponse.id_qst  join utilisateur on utilisateur.id = question.id_user where reponse.id_user = $id ORDER BY date_qst desc limit $offset, $limit_page");
 $output = "";
 $row = mysqli_num_rows($fetch_query);
 
@@ -85,8 +85,7 @@ if ($row > 0) {
                                     <div>";
                                     $idqst = $res['id_qst'];
 
-        // $s = "SELECT descrp_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst and question.id_user = $id ORDER BY date_rep desc";
-$s ="SELECT * FROM  question inner join reponse  inner join utilisateur on utilisateur.id = reponse.id_user where reponse.id_qst = question.id_qst and reponse.id_user = $id ORDER BY date_qst desc";
+            $s ="SELECT * FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user where reponse.id_qst = $idqst and reponse.id_user = $id ORDER BY date_rep desc";
         $rw = mysqli_query($conn, $s);
 
         if ($rw) {
@@ -98,26 +97,30 @@ $s ="SELECT * FROM  question inner join reponse  inner join utilisateur on utili
                                                                 A
                                                             </span>
                                                         </div>";
+                            $output .= "<input type='hidden' name='id_rep' value='{$r['id_rep']}'>";
                                                         
-                                                        "<p class='ml-4 md:ml-6 text-bold'>";
+                            $output .= "<p class='ml-4 md:ml-6 text-bold'>";
 
-                $output .= $r['descrp_rep'];
+                                                        $output .= $r['descrp_rep'];
 
-                $output .= "</p>
+                                                        $output .= "</p>
                                                     </div>
 
-                                                    <div class='flex gap-5'>
+                                                    <div class='flex gap-5'>";
+                                                    $output .= "<a href='editans.php?id_rep={$r['id_rep']}'>
+                            <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
+                            </svg>
+                        </a>";
+                        $output .= "<a href = 'deleteans.php?id_rep={$r['id_rep']}'>
+                        <svg class='h-5 w-5 text-black' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                                    <polyline points='3 6 5 6 21 6' />
+                                    <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
+                                    <line x1='10' y1='11' x2='10' y2='17' />
+                                    <line x1='14' y1='11' x2='14' y2='17' />
+                                </svg>
+                    </a>
                                                        
-
-                                                        <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
-                                                        </svg>
-                                                        <svg class='h-5 w-5 text-black' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                                                            <polyline points='3 6 5 6 21 6' />
-                                                            <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
-                                                            <line x1='10' y1='11' x2='10' y2='17' />
-                                                            <line x1='14' y1='11' x2='14' y2='17' />
-                                                        </svg>
                                                     </div>
                                                 </div>
 
