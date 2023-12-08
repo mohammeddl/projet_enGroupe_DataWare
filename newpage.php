@@ -258,6 +258,7 @@ $id = $_SESSION['id'];
 
             function search() {
                 var titre = searchbar.value;
+                
                 const xhr = new XMLHttpRequest();
                 xhr.open("GET", "config.php?search=" + titre, true);
                 xhr.onload = function() {
