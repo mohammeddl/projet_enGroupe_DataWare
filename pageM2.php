@@ -1,33 +1,20 @@
 <?php
 include "connection.php";
-include "addqst.php";
 $limit_page = 5;
 $page = isset($_POST['page_no']) ? $_POST['page_no'] : 1;
-
 $offset = ($page - 1) * $limit_page;
 
-                $filter = false;
-                if (isset($_POST['filterproj'])) {
-                    $idpro = $_POST['filterproj'];
-                    $filter = true;
-                } elseif (isset($_POST['filterall'])) {
-                    $filter = false;
-                }
-                
+session_start();
+$id = $_SESSION['id'];
 
-$fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc limit $offset, $limit_page");
+$fetch_query = mysqli_query($conn, "SELECT * FROM  question inner join reponse  inner join utilisateur on utilisateur.id = question.id_user where reponse.id_qst = question.id_qst and reponse.id_user = $id ORDER BY date_qst desc limit $offset, $limit_page");
 $output = "";
 $row = mysqli_num_rows($fetch_query);
 
 if ($row > 0) {
     while ($res = mysqli_fetch_array($fetch_query)) {
-        $output .= "
-        
-        <div>
-
-        
-        <div class='flex justify-between '>
-                            <div class='flex'>
+        $output .= "<div class='flex justify-between '>
+                            <div class='flex gap-4'>
                                 <span class='inline-flex justify-center items-center w-6 h-6 rounded bg-green-500 text-white font-medium text-sm'>
                                     Q
                                 </span>";
@@ -39,21 +26,7 @@ if ($row > 0) {
         $output .= "</p>
                             </div>
 
-                            <div class='flex gap-5'>
-                                <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
-                                </svg>
-
-                                <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                    <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
-                                </svg>
-                                <svg class='h-5 w-5 text-black' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                                    <polyline points='3 6 5 6 21 6' />
-                                    <path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' />
-                                    <line x1='10' y1='11' x2='10' y2='17' />
-                                    <line x1='14' y1='11' x2='14' y2='17' />
-                                </svg>
-                            </div>
+                            
 
                         </div>
                         <div class='flex items-start mt-3'>
@@ -109,38 +82,17 @@ if ($row > 0) {
                             </div>
                         </div>
                         <section>
-
-                        <form action='' method='post'>
-                            <div class=flex items-start mt-3 ml-14'>
-
-                                <div>
-                                    <span class='inline-flex justify-center items-center w-6 h-6 rounded bg-gray-200 text-gray-800 font-medium text-sm'>
-                                        A
-                                    </span>
-                                     <input type='hidden' name='id_qst' value='{$res['id_qst']}'>
-                                </div>
-
-                                <div class='ml-4 md:ml-6 text-bold'>
-                                    <textarea type='text' name='descrp_rep' id='' cols='80' rows='1' class='rounded-md border border-gray-400 w-full text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 resize-y' placeholder='write your answer here'></textarea>
-                                </div>
-                                <div class='ml-10'>
-                                    <input type='submit' name='answerqst' class='bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100' value='send'>
-                                </div>
-                            </div>
-                        </form>
-                    </section>
-                     <section>
                                     <div>";
                                     $idqst = $res['id_qst'];
 
-        $s = "SELECT descrp_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst ORDER BY date_rep desc";
-
+        // $s = "SELECT descrp_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst and question.id_user = $id ORDER BY date_rep desc";
+$s ="SELECT * FROM  question inner join reponse  inner join utilisateur on utilisateur.id = reponse.id_user where reponse.id_qst = question.id_qst and reponse.id_user = $id ORDER BY date_qst desc";
         $rw = mysqli_query($conn, $s);
 
         if ($rw) {
             while ($r = mysqli_fetch_assoc($rw)) {
                 $output .= "<div class='flex justify-between '>
-                                                    <div class='flex items-start mt-3 ml-14'>
+                                                    <div class='flex items-start mt-3 ml-14 gap-4'>
                                                         <div>
                                                             <span class='inline-flex justify-center items-center w-6 h-6 rounded bg-gray-200 text-gray-800 font-medium text-sm'>
                                                                 A
@@ -155,9 +107,7 @@ if ($row > 0) {
                                                     </div>
 
                                                     <div class='flex gap-5'>
-                                                        <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
-                                                        </svg>
+                                                       
 
                                                         <svg class='h-5 w-5 text-black' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                                             <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
@@ -223,6 +173,8 @@ if ($row > 0) {
         </div>
 
         </section>
+                     
+                     
 <?php
     }
 }

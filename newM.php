@@ -140,7 +140,7 @@ include "connection.php";
                 <div class="flex items-center justify-between">
                     <div class="w-2/3">
                         <h2 class="section-heading text-bold">
-                            Questions and Answers
+                            My Questions
                         </h2>
                     </div>
                 </div>
