@@ -1,26 +1,17 @@
 <?php
 include('connection.php');
 
-$title = $descrp = "";
-if (isset($_POST['askqst'])) {
-    if (isset($_POST['titre_qst'])) {
-        $title =  $_POST['titre_qst'];
-    }
-    if (isset($_POST['descrp_qst'])) {
-        $descrp =  $_POST['descrp_qst'];
-    }
-
-    $sql = "INSERT INTO question (titre_qst, descrp_qst, date_qst) VALUES ('$title', '$descrp', NOW())";
-    // if(!empty($_POST('tag'))){
-    //   $tag = 
-    // }
+if(isset($_GET['title']) && isset($_GET['desc'])) {
+    $title = $_GET['title'];
+    $desc = $_GET['desc'];
+    $sql = "INSERT INTO question (titre_qst, descrp_qst, date_qst) VALUES ('$title', '$desc', NOW())";
     $result = mysqli_query($conn, $sql);
-    if ($result) {
-        header('Location: newpage.php');
-    } else {
-        echo "Error: " . mysqli_error($conn);
+    $last_id = mysqli_insert_id($conn);
+    if($result) {
+        echo $last_id;
     }
 }
+
 ?>
 
   

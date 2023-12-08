@@ -207,7 +207,46 @@ $id = $_SESSION['id'];
         <div class="h-[20vh]  mb-10 flex flex-col " id="searchdiv">
 
         </div>
+
+        <br>
+        <section class="flex flex-col justify-center items-center w-full">
+            <button id="addqst" type="button" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium mb-4 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Ask Question</button>
+            <div id="qstTrigger" class="hidden"></div>
+            <div id="qstModal" class="hidden">
+                <div>
+                    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" method="post" action="addqst.php">
+                        <div class="flex flex-col flex-wrap -mx-3 mb-6">
+                            <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">what is your question ?</h2>
+                            <div class="relative mt-2 rounded-md">
+                                <input type="text" name="titre_qst" id="titre_qst" class="block rounded-md border border-gray-400 w-full text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="be specific in ur question">
+                            </div>
+                            <div class="w-full md:w-full px-3 mb-2 mt-2">
+                                Enter a description of your question
+                                <textarea id="textarea" class=" rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="descrp_qst" placeholder='give a description of your question'></textarea>
+                            </div>
+                            <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add Tags</h2>
+                            <div class="flex flex-row items-center relative mt-2 rounded-md">
+
+                                <span class="flex flex-wrap py-5" id="tagdiv"></span><img class="w-[8%]" src="img/plus.svg" alt="add tag" id="addtag">
+                            </div>
+                            <div class="w-full md:w-full flex items-center justify-center md:w-full p-4">
+                            <input type="text" class="hidden" value="" name="idhna" id="idhna">
+                            </div>
+                    </form>
+                    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" method="get" action="newpage.php">
+                    <div class="-mr-1">
+                    <input type="submit" value="Add Question" id="sendbtn" name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100">
+                    </div>
+                </form>
+                
+                </div>
+            </div>
+            
+
+
+        </section>
         <script>
+            //hadi dyal recherche
             const form = document.getElementById('mysearch');
             const searchbar = document.getElementById('search');
             const secondform = document.getElementById('myresult');
@@ -232,51 +271,64 @@ $id = $_SESSION['id'];
                 }
                 xhr.send();
             }
-        </script>
-        <br>
-        <section class="flex flex-col justify-center items-center w-full">
-            <button id="addqst" type="button" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium mb-4 text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Ask Question</button>
-            <div id="qstTrigger" class="hidden"></div>
-            <div id="qstModal" class="hidden">
-                <div>
-                    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" method="post" action="">
-                        <div class="flex flex-col flex-wrap -mx-3 mb-6">
-                            <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">what is your question ?</h2>
-                            <div class="relative mt-2 rounded-md">
-                                <input type="text" name="titre_qst" id="" class="block rounded-md border border-gray-400 w-full text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="be specific in ur question">
-                            </div>
-                            <div class="w-full md:w-full px-3 mb-2 mt-2">
-                                Enter a description of your question
-                                <textarea class=" rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="descrp_qst" placeholder='give a description of your question'></textarea>
-                            </div>
-                            <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add Tags</h2>
-                            <div class="flex flex-row items-center relative mt-2 rounded-md">
-                                <span class="flex flex-wrap py-5" id="tagdiv"></span><img class="w-[8%]" src="img/plus.svg" alt="add tag" id="addtag">
-                            </div>
-                            <div class="w-full md:w-full flex items-center justify-center md:w-full p-4">
-                                <div class="-mr-1">
-                                    <input type='submit' name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100" value='send'>
-                                </div>
-                            </div>
 
-                    </form>
-                </div>
-            </div>
-            <div class="">
-                <button type="submit" class="block py-2 px-3 text-pink-500 font-bold rounded hover:bg-blue-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"><a href="newpage.php" class="">cancel</a>
-                </button>
-            </div>
-
-        </section>
-        <script>
-            const addtag = document.getElementById('addtag');
+            //add question form wa fhm
+            const addtags = document.getElementById('addtag');
             const tagdiv = document.getElementById('tagdiv');
-
-            addtag.addEventListener("click", add);
-
-            function add() {
-                let tag = ` <input type="text" name="tag" id="taginput" class="block rounded-md border border-gray-400 w-[20%] text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="add tag">`
+            const titre_qst = document.getElementById('titre_qst');
+            const textarea = document.getElementById('textarea');
+            const idhna = document.getElementById('idhna');
+            addtags.addEventListener("click", add);
+            let x = 1;
+            function add(e) {
+                let tag = ` <input type="text" name="tag" id="taginput" class="block rounded-md border border-gray-400 w-[20%] text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 taginput" placeholder="add tag">`
                 tagdiv.innerHTML += tag;
+                
+                var qsttitle = titre_qst.value;
+                var qstdesc = textarea.value;
+                if (x === 1&&qsttitle.trim() !== "") {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", "addqst.php?title=" + qsttitle + "&desc=" + qstdesc, true);
+                    xhr.onload = function() {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            idhna.value = xhr.response;
+                        }
+                    }
+                    xhr.send();
+                    x++;
+                }
+                else{
+                    e.preventDefault();
+                }
+            }
+           //hna kansift  wa fhm
+            const sendbtn = document.getElementById('sendbtn');
+            sendbtn.addEventListener('click', addtag);
+
+            function addtag() {
+                
+
+                let qstid = document.getElementById('idhna').value;
+                let arrayofvalues = [];
+
+                const taginput = document.querySelectorAll('.taginput');
+
+                for (let i = 0; i < taginput.length; i++) {
+                    arrayofvalues.push(taginput[i].value); 
+                }
+
+                const xhr = new XMLHttpRequest();
+                const tagsString = JSON.stringify(arrayofvalues);
+
+                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString, true);
+
+                xhr.onload = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        console.log(xhr.response);
+                    }
+                }
+
+                xhr.send();
             }
         </script>
         <!-- --------------------------------------------------------------- -->
