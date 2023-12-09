@@ -112,10 +112,10 @@ if ($row > 0) {
 
         if ($rw) {
             while ($r = mysqli_fetch_assoc($rw)) {
-
+            if($r['archive_rep']==0){
                 $output .= "<div class='flex justify-between '>
-            
                                                     <div class='flex items-start mt-3 ml-14 gap-4'>
+                                                    
                                                         <div>
                                                         
                                                         <button  class='inline-flex justify-center items-center w-6 h-6 rounded bg-gray-200 text-gray-800 font-medium text-sm cursor-pointer'>";
@@ -203,7 +203,7 @@ if ($row > 0) {
 ?>
                 <!-- end answer  -->
         <?php
-            }
+            }}
         }
         ?>
 
