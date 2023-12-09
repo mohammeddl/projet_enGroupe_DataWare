@@ -106,7 +106,7 @@ if ($row > 0) {
                                     <div>";
         $idqst = $res['id_qst'];
 
-        $s = "SELECT id_rep,statut_rep,descrp_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst ORDER BY date_rep desc";
+        $s = "SELECT id_rep,statut_rep, archive_rep, descrp_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst ORDER BY date_rep desc";
 
         $rw = mysqli_query($conn, $s);
 
@@ -114,6 +114,7 @@ if ($row > 0) {
             while ($r = mysqli_fetch_assoc($rw)) {
 
                 $output .= "<div class='flex justify-between '>
+            
                                                     <div class='flex items-start mt-3 ml-14 gap-4'>
                                                         <div>
                                                         
@@ -143,10 +144,15 @@ if ($row > 0) {
                                                     <form class='flex gap-5' action='' method='get'>";
                                                     $output .= "<input type='hidden' name='id_rep' value='{$r['id_rep']}'>";
                                                     $output .= "<input type='hidden' name='statut_rep' value='{$r['statut_rep']}'>";
+                                                    
 
 
-                                                    $output .= "<a href='statut.php?id_rep={$r['id_rep']}'><svg xmlns='http://www.w3.org/2000/svg' height='16' width='18' viewBox='0 0 576 512'><path fill='#119c14' d='M96 80c0-26.5 21.5-48 48-48H432c26.5 0 48 21.5 48 48V384H96V80zm313 47c-9.4-9.4-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L409 161c9.4-9.4 9.4-24.6 0-33.9zM0 336c0-26.5 21.5-48 48-48H64V416H512V288h16c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336z'></path></svg> </a>
+                                                    $output .= "<a href='statut.php?id_rep={$r['id_rep']}'><svg xmlns='http://www.w3.org/2000/svg' height='16' width='18' viewBox='0 0 576 512'><path fill='#119c14' d='M96 80c0-26.5 21.5-48 48-48H432c26.5 0 48 21.5 48 48V384H96V80zm313 47c-9.4-9.4-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L409 161c9.4-9.4 9.4-24.6 0-33.9zM0 336c0-26.5 21.5-48 48-48H64V416H512V288h16c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V336z'></path></svg> 
+                                <button type='submit' name='submitSolution'></svg></button></a>";
 
+                                $output .="<a href='archive.php?id_rep={$r['id_rep']}'><svg class='h-5 w-5 text-red-700' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
+                                <button type='submit' name='submitArchiv'></svg></button></a>
                                                     
                                                 </form>
                                             
