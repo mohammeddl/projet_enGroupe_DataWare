@@ -226,7 +226,6 @@ $id = $_SESSION['id'];
                             </div>
                             <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add Tags</h2>
                             <div class="flex flex-row items-center relative mt-2 rounded-md">
-
                                 <span class="flex flex-wrap py-5" id="tagdiv"></span><img class="w-[8%]" src="img/plus.svg" alt="add tag" id="addtag">
                             </div>
                             <div class="w-full md:w-full flex items-center justify-center md:w-full p-4">
@@ -238,7 +237,6 @@ $id = $_SESSION['id'];
                     <input type="submit" value="Add Question" id="sendbtn" name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100">
                     </div>
                 </form>
-                
                 </div>
             </div>
             
@@ -258,7 +256,6 @@ $id = $_SESSION['id'];
 
             function search() {
                 var titre = searchbar.value;
-                
                 const xhr = new XMLHttpRequest();
                 xhr.open("GET", "config.php?search=" + titre, true);
                 xhr.onload = function() {
@@ -276,7 +273,6 @@ $id = $_SESSION['id'];
             //add question form wa fhm
             const addtags = document.getElementById('addtag');
             const tagdiv = document.getElementById('tagdiv');
-            const titre_qst = document.getElementById('titre_qst');
             const textarea = document.getElementById('textarea');
             const idhna = document.getElementById('idhna');
             addtags.addEventListener("click", add);
@@ -284,15 +280,18 @@ $id = $_SESSION['id'];
             function add(e) {
                 let tag = ` <input type="text" name="tag" id="taginput" class="block rounded-md border border-gray-400 w-[20%] text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 taginput" placeholder="add tag">`
                 tagdiv.innerHTML += tag;
-                
+                const titre_qst = document.getElementById('titre_qst');
                 var qsttitle = titre_qst.value;
                 var qstdesc = textarea.value;
+                console.log(qsttitle);
+                console.log(qstdesc);
                 if (x === 1&&qsttitle.trim() !== "") {
                     const xhr = new XMLHttpRequest();
                     xhr.open("GET", "addqst.php?title=" + qsttitle + "&desc=" + qstdesc, true);
                     xhr.onload = function() {
                         if (xhr.readyState == 4 && xhr.status == 200) {
                             idhna.value = xhr.response;
+                            console.log(xhr.response);
                         }
                     }
                     xhr.send();
@@ -305,24 +304,17 @@ $id = $_SESSION['id'];
            //hna kansift  wa fhm
             const sendbtn = document.getElementById('sendbtn');
             sendbtn.addEventListener('click', addtag);
-
             function addtag() {
-                
-
+                const qsttitre=document.getElementById('titre_qst').value;
                 let qstid = document.getElementById('idhna').value;
                 let arrayofvalues = [];
-
                 const taginput = document.querySelectorAll('.taginput');
-
                 for (let i = 0; i < taginput.length; i++) {
                     arrayofvalues.push(taginput[i].value); 
                 }
-
                 const xhr = new XMLHttpRequest();
                 const tagsString = JSON.stringify(arrayofvalues);
-
-                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString, true);
-
+                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString + "&titre="+qsttitre , true);
                 xhr.onload = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         console.log(xhr.response);
