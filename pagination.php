@@ -21,6 +21,7 @@ $row = mysqli_num_rows($fetch_query);
 
 if ($row > 0) {
     while ($res = mysqli_fetch_array($fetch_query)) {
+        if($res['archive_qst']==0 ){
         $output .= "
         
         <div>
@@ -47,9 +48,9 @@ if ($row > 0) {
 
 
 
-        $output .="<a href='archiveScrum.php?id_rep={$res['id_qst']}'><svg class='h-5 w-5 text-blue-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+        $output .="<a href='archiveScrum.php?id_qst={$res['id_qst']}'><svg class='h-5 w-5 text-blue-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
-        <button type='submit' name='submitArchivQui'></svg></button></a>
+        <button type='submit' name=''></svg></button></a>
                             
                         </form>
 
@@ -105,8 +106,10 @@ if ($row > 0) {
         $output .= "</p>
                                 </span>
                             </div>
-                        </div>
-                        <section>
+                        </div>";
+
+        }
+                        "<section>
 
                         <form action='' method='post'>
                             <div class=flex items-start mt-3 ml-14'>
@@ -130,7 +133,7 @@ if ($row > 0) {
                      <section>
                                     <div>";
                                     $idqst = $res['id_qst'];
-
+    }
         $s = "SELECT id_rep, statut_rep, descrp_rep, archive_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst ORDER BY date_rep desc";
 
         $rw = mysqli_query($conn, $s);
@@ -218,7 +221,7 @@ if ($row > 0) {
 ?>
                 <!-- end answer  -->
                 <?php
-                                }}
+                                }
                             }
                                     ?>
 

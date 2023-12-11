@@ -6,7 +6,6 @@ if (isset($_GET["id_qst"])) {
 
     $getStatutQuery = "SELECT archive_qst FROM question WHERE id_qst = $id_qst";
     $resultArchive = mysqli_query($conn, $getStatutQuery);
-
     if ($resultArchive) {
         $row = mysqli_fetch_assoc($resultArchive);
         $currentArchiv = $row['archive_qst'];

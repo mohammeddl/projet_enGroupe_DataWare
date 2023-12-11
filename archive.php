@@ -3,6 +3,7 @@ include "connection.php";
 
 if (isset($_GET["id_rep"])) {
     $id_rep = $_GET['id_rep'];
+    echo 'hello';
 
     $getStatutQuery = "SELECT archive_rep FROM reponse WHERE id_rep = $id_rep";
     $resultArchive = mysqli_query($conn, $getStatutQuery);
@@ -16,7 +17,7 @@ if (isset($_GET["id_rep"])) {
         $resultSolution = mysqli_query($conn, $reqSolution);
 
         if ($resultSolution) {
-            header('Location: newpage.php');
+            header('Location:newpage.php');
         } else {
             echo "Error updating database: " . mysqli_error($conn);
         }
