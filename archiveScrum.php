@@ -13,6 +13,10 @@ if (isset($_GET["id_qst"])) {
         $newArchiv = ($currentArchiv == 1) ? 0 : 1;
         $reqSolution = "UPDATE question SET archive_qst = $newArchiv WHERE id_qst = $id_qst";
         $resultSolution = mysqli_query($conn, $reqSolution);
+        
+        $resultA = "UPDATE reponse SET archive_rep = $newArchiv WHERE id_qst = $id_qst";
+        $res = mysqli_query($conn, $resultA);
+
 
         if ($resultSolution) {
             header('Location: newpage.php');
