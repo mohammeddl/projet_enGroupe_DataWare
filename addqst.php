@@ -10,6 +10,9 @@ $result_pro = mysqli_query($conn, $sql_pro);
 
 if ($result_pro && $row_pro = mysqli_fetch_assoc($result_pro)) {
     $idpro=$row_pro['projet'];
+    // if($idpro == NULL){
+    //     echo "u don't have a project to ask a question yet";
+    // }
     if(isset($_GET['title']) && isset($_GET['desc'])) {
         $title = $_GET['title'];
         $desc = $_GET['desc'];

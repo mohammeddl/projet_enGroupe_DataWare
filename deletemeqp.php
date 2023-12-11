@@ -1,5 +1,3 @@
-<!-- remove member from squad  -->
-
 <?php
 require('connection.php');
 
@@ -7,7 +5,7 @@ if (isset($_GET['id'])) {
     $id= $_GET['id']; 
 
     $updateQuery = "UPDATE utilisateur
-                    SET equipe = '1'
+                    SET equipe = null, projet = null
                     WHERE id = '$id'";
 
     $updateResult = mysqli_query($conn, $updateQuery);
