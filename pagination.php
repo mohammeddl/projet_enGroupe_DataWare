@@ -33,7 +33,7 @@ $output = "";
 $row = mysqli_num_rows($fetch_query);
 
 
-if ($row > 0) {
+if ($row > 0    ) {
     while ($res = mysqli_fetch_array($fetch_query)) {
         if($res['archive_qst']==0 ){
             $idqst = $res['id_qst'];
@@ -62,12 +62,12 @@ if ($row > 0) {
 
 
 
-
+if($res['role'] === "ScrumMaster"){
         $output .="<a href='archiveScrum.php?id_qst=$idqst'><svg class='h-5 w-5 text-blue-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
-        <button type='submit' name=''></svg></button></a>
-                            
-                        </form>
+        <button type='submit' name=''></svg></button></a>";
+                        }    
+                        $output .= "</form>
 
                         </div>
                         <div class='flex items-start mt-3'>
@@ -178,11 +178,13 @@ if ($row > 0) {
                                                     
 
 
-
-
-                                $output .="<a href='archive.php?id_rep={$roww['id_rep']}'><svg class='h-5 w-5 text-red-700' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                if($res['role'] === "ScrumMaster"){
+                                    $output .="    <a href='archive.php?id_rep={$roww['id_rep']}'><svg class='h-5 w-5 text-red-700' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                 <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
-                                <button type='submit' name='submitArchiv'></svg></button></a>
+                                <button type='submit' name='submitArchiv'></svg></button></a>";
+                                }
+
+                                $output .="
                                                     
                                                 </form>
                                             
