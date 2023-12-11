@@ -246,8 +246,6 @@ $id = $_SESSION['id'];
                 const titre_qst = document.getElementById('titre_qst');
                 var qsttitle = titre_qst.value;
                 var qstdesc = textarea.value;
-                console.log(qsttitle);
-                console.log(qstdesc);
                 if (x === 1&&qsttitle.trim() !== "") {
                     const xhr = new XMLHttpRequest();
                     xhr.open("GET", "addqst.php?title=" + qsttitle + "&desc=" + qstdesc, true);
@@ -273,8 +271,6 @@ $id = $_SESSION['id'];
                 let qstid = document.getElementById('idhna').value;
                 let arrayofvalues = [];
                 const taginput = document.querySelectorAll('.taginput');
-                console.log(qsttitre);
-                console.log(qstid);
                 for (let i = 0; i < taginput.length; i++) {
                     arrayofvalues.push(taginput[i].value); 
                 }

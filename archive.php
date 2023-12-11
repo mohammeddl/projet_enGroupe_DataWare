@@ -16,7 +16,7 @@ if (isset($_GET["id_rep"])) {
         $resultSolution = mysqli_query($conn, $reqSolution);
 
         if ($resultSolution) {
-            header('Location: newM.php');
+            header('Location: newpage.php');
         } else {
             echo "Error updating database: " . mysqli_error($conn);
         }
