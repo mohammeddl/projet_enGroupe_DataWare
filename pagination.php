@@ -13,7 +13,6 @@ if($_SESSION['type']==='filterall'){
     $id = $_SESSION['idpro'];
     $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,archive_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $id  ORDER BY date_qst desc limit $offset, $limit_page");
 }
-
                 
 
 $output = "";
@@ -106,10 +105,10 @@ if ($row > 0) {
         $output .= "</p>
                                 </span>
                             </div>
-                        </div>";
+                        </div>
 
-        }
-                        "<section>
+        
+                        <section>
 
                         <form action='' method='post'>
                             <div class=flex items-start mt-3 ml-14'>
@@ -129,8 +128,9 @@ if ($row > 0) {
                                 </div>
                             </div>
                         </form>
-                    </section>
-                     <section>
+                    </section>";
+                }
+                     "<section>
                                     <div>";
                                     $idqst = $res['id_qst'];
     }
@@ -144,7 +144,7 @@ if ($row > 0) {
 
         if ($rw) {
             while ($r = mysqli_fetch_assoc($rw)) {
-                if($r['archive_rep']==0 ){
+                if($r['archive_rep'] == 0 ){
                 $output .= "<div class='flex justify-between '>
                                                     <div class='flex items-start mt-3 ml-14'>
                                                         <div>
