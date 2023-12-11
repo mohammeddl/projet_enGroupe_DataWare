@@ -1,21 +1,21 @@
 <?php
 include "connection.php";
 include "addqst.php";
+include "answerqst.php";
 $limit_page = 5;
 $page = isset($_POST['page_no']) ? $_POST['page_no'] : 1;
 
 $offset = ($page - 1) * $limit_page;
 
-                $filter = false;
-                if (isset($_POST['filterproj'])) {
-                    $idpro = $_POST['filterproj'];
-                    $filter = true;
-                } elseif (isset($_POST['filterall'])) {
-                    $filter = false;
-                }
+if($_SESSION['type']==='filterall'){
+    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc limit $offset, $limit_page");
+}else if($_SESSION['type']==='filterd'){
+    $id = $_SESSION['idpro'];
+    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $id  ORDER BY date_qst desc limit $offset, $limit_page");
+}
+
                 
 
-$fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc limit $offset, $limit_page");
 $output = "";
 $row = mysqli_num_rows($fetch_query);
 

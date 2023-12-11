@@ -19,7 +19,6 @@ if ($result_pro && $row_pro = mysqli_fetch_assoc($result_pro)) {
         $last_id = mysqli_insert_id($conn);
         if($result) {
             echo $last_id;
-            echo $idpro;
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 include('addqst.php');
+include('answerqst.php');
+include('addtag.php');
 $id = $_SESSION['id'];
 ?>
 
@@ -97,7 +99,7 @@ $id = $_SESSION['id'];
                 </button>
             </div>
             <div>
-                <form action="newpage.php" method="get">
+            <form action="newpage.php" method="get">
                     <?php
                     $stmt = mysqli_prepare($conn, "SELECT id_pro, nom_pro FROM projet");
                     mysqli_stmt_execute($stmt);
@@ -105,20 +107,25 @@ $id = $_SESSION['id'];
                     ?>
                     <?php
                     echo "<button type='submit' name='filterall'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>All</button>";
+                    $i=0;
                     while (mysqli_stmt_fetch($stmt)) {
                         echo "<div class='flex items-center space-x-3'>
-                      <button type='submit' name='filterproj' value='$id' class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>$projetnom</button>
+                        <input type='text' value='$id' name='filpro$i' class='hidden' >
+                      <button type='submit' name='filterproj' value='$i'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' >$projetnom</button>
                   </div>";
+                  $i++;
                     }
+                    
                     ?>
                 </form>
                 <?php
-                $filter = false;
-                if (isset($_POST['filterproj'])) {
-                    $idpro = $_POST['filterproj'];
-                    $filter = true;
-                } elseif (isset($_POST['filterall'])) {
-                    $filter = false;
+                $_SESSION['type']='filterall';
+                if (isset($_GET['filterproj'])) {
+                    $i = $_GET['filterproj'];
+                    $_SESSION['idpro']=$_GET['filpro'.$i];
+                    $_SESSION['type']='filterd';
+                } elseif (isset($_GET['filterall'])) {
+                    $_SESSION['type']='filterall';
                 }
                 ?>
             </div>
@@ -185,7 +192,7 @@ $id = $_SESSION['id'];
                             <input type="text" class="hidden" value="" name="idhna" id="idhna">
                             </div>
                     </form>
-                    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" method="get" action="newpage.php">
+                    <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2" method="get" action="">
                     <div class="-mr-1">
                     <input type="submit" value="Add Question" id="sendbtn" name="askqst" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100">
                     </div>
@@ -258,13 +265,16 @@ $id = $_SESSION['id'];
                 }
             }
            //hna kansift  wa fhm
-            const sendbtn = document.getElementById('sendbtn');
+           const sendbtn = document.getElementById('sendbtn');
             sendbtn.addEventListener('click', addtag);
             function addtag() {
+               
                 const qsttitre=document.getElementById('titre_qst').value;
                 let qstid = document.getElementById('idhna').value;
                 let arrayofvalues = [];
                 const taginput = document.querySelectorAll('.taginput');
+                console.log(qsttitre);
+                console.log(qstid);
                 for (let i = 0; i < taginput.length; i++) {
                     arrayofvalues.push(taginput[i].value); 
                 }
@@ -274,7 +284,6 @@ $id = $_SESSION['id'];
                 xhr.onload = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         console.log(xhr.response);
-                        console.log("hello");
                     }
                 }
 

@@ -23,7 +23,8 @@ if (isset($_GET['id'])) {
                 mysqli_stmt_execute($stmt2);
                 mysqli_stmt_close($stmt2);
             }
-            mysqli_commit($conn);
+            mysqli_commit($conn);   
         } 
     }
+
 
