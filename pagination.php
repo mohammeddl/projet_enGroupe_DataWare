@@ -23,11 +23,7 @@ function dd($data)
     exit; 
 }
 
-// dd(mysqli_fetch_array($fetch_query));
 
-
-
-// dd(mysqli_fetch_all($rw));
 $email =$_SESSION['email'];
 $role = "SELECT role FROM utilisateur WHERE email = '$email'";
  $email2 = mysqli_query($conn, $role);
