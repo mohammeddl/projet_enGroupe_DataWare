@@ -7,22 +7,42 @@ $page = isset($_POST['page_no']) ? $_POST['page_no'] : 1;
 
 $offset = ($page - 1) * $limit_page;
 
-if($_SESSION['type']==='filterall'){
-    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user ORDER BY date_qst desc limit $offset, $limit_page");
+if($_SESSION['type']==='filterall'){ 
+    $fetch_query = mysqli_query($conn, "SELECT * FROM question inner join utilisateur on utilisateur.id = question.id_user  ORDER BY date_qst desc limit $offset, $limit_page");
 }else if($_SESSION['type']==='filterd'){
     $id = $_SESSION['idpro'];
-    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $id  ORDER BY date_qst desc limit $offset, $limit_page");
+    $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,archive_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $id  ORDER BY date_qst desc limit $offset, $limit_page");
 }
 
-                
+             
+function dd($data)
+{
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+    exit; 
+}
+
+// dd(mysqli_fetch_array($fetch_query));
+
+
+
+// dd(mysqli_fetch_all($rw));
+$email =$_SESSION['email'];
+$role = "SELECT role FROM utilisateur WHERE email = '$email'";
+ $email2 = mysqli_query($conn, $role);
+$rowScrum = mysqli_fetch_array($email2);
 
 $output = "";
 $row = mysqli_num_rows($fetch_query);
 
-if ($row > 0) {
+
+if ($row > 0    ) {
     while ($res = mysqli_fetch_array($fetch_query)) {
-        $output .= "
-        
+        if($res['archive_qst']==0 ){
+            $idqst = $res['id_qst'];
+           
+        $output .= " 
         <div>
 
         
@@ -32,14 +52,26 @@ if ($row > 0) {
                                     Q
                                 </span>";
                                 
-                                $output .= "<input type='hidden' name='id_qst' value='{$res['id_qst']}'>";
+                                $output .= "<input type='hidden' name='id_qst' value='$idqst'>";
                                 "<p class='ml-4 md:ml-6 text-bold'>";
 
         $output .= $res['titre_qst'];
         $output .= "</p>
                             </div>
 
+                            <form class='flex gap-5' action='' method='get'>";
+                            $output .= "<input type='hidden' name='id_qst' value='$idqst'>";
                             
+                            
+
+
+
+if($rowScrum['role'] == "ScrumMaster"){
+        $output .="<a href='archiveScrum.php?id_qst=$idqst'><svg class='h-5 w-5 text-blue-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
+        <button type='submit' name=''></svg></button></a>";
+                        }    
+                        $output .= "</form>
 
                         </div>
                         <div class='flex items-start mt-3'>
@@ -94,6 +126,8 @@ if ($row > 0) {
                                 </span>
                             </div>
                         </div>
+
+        
                         <section>
 
                         <form action='' method='post'>
@@ -103,7 +137,7 @@ if ($row > 0) {
                                     <span class='inline-flex justify-center items-center w-6 h-6 rounded bg-gray-200 text-gray-800 font-medium text-sm'>
                                         A
                                     </span>
-                                     <input type='hidden' name='id_qst' value='{$res['id_qst']}'>
+                                     <input type='hidden' name='id_qst' value='$idqst'>
                                 </div>
 
                                 <div class='ml-4 md:ml-6 text-bold'>
@@ -115,17 +149,18 @@ if ($row > 0) {
                             </div>
                         </form>
                     </section>
+                
                      <section>
                                     <div>";
-                                    $idqst = $res['id_qst'];
+                                   
+       
+           
+                            $reponse_query = mysqli_query($conn, "SELECT * FROM reponse where id_qst = $idqst ORDER BY date_rep desc limit $offset, $limit_page");
+                            while($roww = mysqli_fetch_assoc($reponse_query)){
+                if($roww['archive_rep'] == 0 ){
+                    
 
-        $s = "SELECT id_rep, statut_rep, descrp_rep, archive_rep, date_rep,nom,prenom FROM reponse inner join utilisateur on utilisateur.id = reponse.id_user inner join question on reponse.id_qst = question.id_qst WHERE question.id_qst = $idqst ORDER BY date_rep desc";
-
-        $rw = mysqli_query($conn, $s);
-
-        if ($rw) {
-            while ($r = mysqli_fetch_assoc($rw)) {
-                if($r['archive_rep']==0 ){
+            
                 $output .= "<div class='flex justify-between '>
                                                     <div class='flex items-start mt-3 ml-14'>
                                                         <div>
@@ -136,22 +171,24 @@ if ($row > 0) {
                                                         
                                                         "<p class='ml-4 md:ml-6 text-bold'>";
 
-                $output .= $r['descrp_rep'];
+                $output .= $roww['descrp_rep'];
 
                 $output .= "</p>
                                                     </div>
 
                                                     <form class='flex gap-5' action='' method='get'>";
-                                                    $output .= "<input type='hidden' name='id_rep' value='{$r['id_rep']}'>";
+                                                    $output .= "<input type='hidden' name='id_rep' value='{$roww['id_rep']}'>";
                                                     
                                                     
 
 
-
-
-                                $output .="<a href='archive.php?id_rep={$r['id_rep']}'><svg class='h-5 w-5 text-red-700' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                if($rowScrum['role']== "ScrumMaster"){
+                                    $output .="    <a href='archive.php?id_rep={$roww['id_rep']}'><svg class='h-5 w-5 text-red-700' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                 <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20' />
-                                <button type='submit' name='submitArchiv'></svg></button></a>
+                                <button type='submit' name='submitArchiv'></svg></button></a>";
+                                }
+
+                                $output .="
                                                     
                                                 </form>
                                             
@@ -187,30 +224,31 @@ if ($row > 0) {
 
                                                         <span class='text-sm text-gray-800'>
                                                         <p>";
-                $output .= $r['nom'] . ' ' . $r['prenom'];
+                $output .= $res['nom'] . ' ' . $res['prenom'];
                 $output .= "</p> 
                 </span>
                                                             <span class='hidden md:inline-block'>
                                                                 <p class='ml-4 md:ml-6 text-bold'>";
-                $output .= $r['date_rep'];
+                $output .= $roww['date_rep'];
                 $output .= "</p>
                                                         </span>
                                                     </div>
 
                                                    </div>";
+                                                }
 
 ?>
                 <!-- end answer  -->
                 <?php
-                                }}
-                            }
+                                }
+    }}
                                     ?>
 
         </div>
 
         </section>
 <?php
-    }
+    
 }
 ?>
 
