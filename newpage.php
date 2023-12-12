@@ -73,23 +73,6 @@ $id = $_SESSION['id'];
                     Home
                 </div>
             </div>
-            <div class="hover:ml-4 w-full text-white dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
-                </svg>
-                <div>
-                    Table
-                </div>
-            </div>
-            <div class="hover:ml-4 w-full text-white  dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
-                </svg>
-                <div>
-                    Graph
-                </div>
-            </div>
             <div class="hover:ml-4 w-full text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300 flex flex-row items-center space-x-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
@@ -106,12 +89,12 @@ $id = $_SESSION['id'];
                     mysqli_stmt_bind_result($stmt, $id, $projetnom);
                     ?>
                     <?php
-                    echo "<button type='submit' name='filterall'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>All</button>";
+                    echo "<button type='submit' name='filterall'  class='flex bg-[#1E293B] w-[80%] hover:m-2 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' filterpro>All</button>";
                     $i=0;
                     while (mysqli_stmt_fetch($stmt)) {
                         echo "<div class='flex items-center space-x-3'>
                         <input type='text' value='$id' name='filpro$i' class='hidden' >
-                      <button type='submit' name='filterproj' value='$i'  class='flex bg-[#1E293B] w-[80%] hover:ml-4 text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' >$projetnom</button>
+                      <button type='submit' name='filterproj' value='$i'  class=' hover:m-2 flex bg-[#1E293B] w-[80%] my-[4px] text-white hover:text-purple-500 dark:hover:text-blue-500 bg-[#1E293B] p-2 pl-8 rounded-full transform ease-in-out duration-300' >$projetnom</button>
                   </div>";
                   $i++;
                     }
@@ -141,13 +124,7 @@ $id = $_SESSION['id'];
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
                 </svg>
-            </div>
-            <div class="hover:ml-4 justify-end pr-5 text-white dark:hover:text-blue-500 w-full bg-[#1E293B] p-3 rounded-full transform ease-in-out duration-300 flex">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
-                </svg>
-            </div>
+
         </div>
 
     </aside>
@@ -238,6 +215,7 @@ $id = $_SESSION['id'];
             const tagdiv = document.getElementById('tagdiv');
             const textarea = document.getElementById('textarea');
             const idhna = document.getElementById('idhna');
+
             addtags.addEventListener("click", add);
             let x = 1;
             function add(e) {
@@ -266,17 +244,27 @@ $id = $_SESSION['id'];
            const sendbtn = document.getElementById('sendbtn');
             sendbtn.addEventListener('click', addtag);
             function addtag() {
-               
-                const qsttitre=document.getElementById('titre_qst').value;
+                const taginput = document.querySelectorAll('.taginput');
+                const qsttitle=document.getElementById('titre_qst').value;
+                const qstdesc = textarea.value;
+               if(taginput.length === 0){
+                const xhr = new XMLHttpRequest();
+                    xhr.open("GET", "addqst.php?title=" + qsttitle + "&desc=" + qstdesc, true);
+                    xhr.onload = function() {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            console.log(xhr.response);
+                        }
+                    }
+                    xhr.send();
+               }else{
                 let qstid = document.getElementById('idhna').value;
                 let arrayofvalues = [];
-                const taginput = document.querySelectorAll('.taginput');
                 for (let i = 0; i < taginput.length; i++) {
                     arrayofvalues.push(taginput[i].value); 
                 }
                 const xhr = new XMLHttpRequest();
                 const tagsString = JSON.stringify(arrayofvalues);
-                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString + "&titre="+qsttitre , true);
+                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString + "&titre="+qsttitle , true);
                 xhr.onload = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         console.log(xhr.response);
@@ -284,6 +272,7 @@ $id = $_SESSION['id'];
                 }
 
                 xhr.send();
+            }
             }
         </script>
         <!-- --------------------------------------------------------------- -->
@@ -406,3 +395,4 @@ $id = $_SESSION['id'];
 </body>
 
 </html>
+<?php $_SESSION['id']=$id; ?>
