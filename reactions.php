@@ -5,13 +5,14 @@ $iduser = $_GET['iduser'];
 $likes = $_GET['likes'];
 $dislikes = $_GET['dislikes'];
 $type = $_GET['type'];
-echo "idqst is $idqst";
-echo "iduser is $iduser";
-echo "likes is $likes";
+// echo "idqst is $idqst";
+// echo "iduser is $iduser";
+// echo "likes is $likes";
 
 if ($type) {
     if (isset($_GET['insert']) && $_GET['insert'] === 'insert') {
-        $sql = "INSERT INTO reactions(id_qst,id_user, dislike) values($idqst,$iduser,$dislikes)";
+     
+        $sql = "UPDATE reactions set dislike = $dislikes where id_qst = $idqst";
         mysqli_query($conn, $sql);
     } elseif (isset($_GET['update']) && $_GET['update'] === 'update') {
         $sql = "UPDATE reactions set dislike = $dislikes where id_qst = $idqst";
