@@ -7,30 +7,26 @@ $page = isset($_POST['page_no']) ? $_POST['page_no'] : 1;
 
 $offset = ($page - 1) * $limit_page;
 
-if ($_SESSION['type'] === 'filterall') {
+if($_SESSION['type']==='filterall'){ 
     $fetch_query = mysqli_query($conn, "SELECT * FROM question inner join utilisateur on utilisateur.id = question.id_user  ORDER BY date_qst desc limit $offset, $limit_page");
-} else if ($_SESSION['type'] === 'filterd') {
+}else if($_SESSION['type']==='filterd'){
     $id = $_SESSION['idpro'];
     $fetch_query = mysqli_query($conn, "SELECT id_qst, titre_qst, descrp_qst, date_qst,archive_qst,nom,prenom FROM question inner join utilisateur on utilisateur.id = question.id_user where id_pro = $id  ORDER BY date_qst desc limit $offset, $limit_page");
 }
 
-
+             
 function dd($data)
 {
     echo '<pre>';
     print_r($data);
     echo '</pre>';
-    exit;
+    exit; 
 }
 
-// dd(mysqli_fetch_array($fetch_query));
 
-
-
-// dd(mysqli_fetch_all($rw));
-$email = $_SESSION['email'];
+$email =$_SESSION['email'];
 $role = "SELECT role FROM utilisateur WHERE email = '$email'";
-$email2 = mysqli_query($conn, $role);
+ $email2 = mysqli_query($conn, $role);
 $rowScrum = mysqli_fetch_array($email2);
 
 $output = "";
