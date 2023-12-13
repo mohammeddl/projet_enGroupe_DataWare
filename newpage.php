@@ -326,6 +326,7 @@ $id = $_SESSION['id'];
                 showdata(page);
             });
         </script>
+   
 
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
@@ -395,4 +396,3 @@ $id = $_SESSION['id'];
 </body>
 
 </html>
-<?php $_SESSION['id']=$id; ?>
