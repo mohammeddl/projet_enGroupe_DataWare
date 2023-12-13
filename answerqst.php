@@ -15,7 +15,7 @@ $sql = "INSERT INTO reponse (descrp_rep, date_rep, id_user,id_qst) VALUES ('$d',
 
 $result = mysqli_query($conn, $sql);
 if ($result) {
-    header('Location: newpage.php');
+    header('Location:newpage.php');
 } else {
     echo "Error: " . mysqli_error($conn);
 }
