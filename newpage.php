@@ -215,6 +215,7 @@ $id = $_SESSION['id'];
             const tagdiv = document.getElementById('tagdiv');
             const textarea = document.getElementById('textarea');
             const idhna = document.getElementById('idhna');
+
             addtags.addEventListener("click", add);
             let x = 1;
             function add(e) {
@@ -243,17 +244,27 @@ $id = $_SESSION['id'];
            const sendbtn = document.getElementById('sendbtn');
             sendbtn.addEventListener('click', addtag);
             function addtag() {
-               
-                const qsttitre=document.getElementById('titre_qst').value;
+                const taginput = document.querySelectorAll('.taginput');
+                const qsttitle=document.getElementById('titre_qst').value;
+                const qstdesc = textarea.value;
+               if(taginput.length === 0){
+                const xhr = new XMLHttpRequest();
+                    xhr.open("GET", "addqst.php?title=" + qsttitle + "&desc=" + qstdesc, true);
+                    xhr.onload = function() {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            console.log(xhr.response);
+                        }
+                    }
+                    xhr.send();
+               }else{
                 let qstid = document.getElementById('idhna').value;
                 let arrayofvalues = [];
-                const taginput = document.querySelectorAll('.taginput');
                 for (let i = 0; i < taginput.length; i++) {
                     arrayofvalues.push(taginput[i].value); 
                 }
                 const xhr = new XMLHttpRequest();
                 const tagsString = JSON.stringify(arrayofvalues);
-                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString + "&titre="+qsttitre , true);
+                xhr.open("GET", "addtag.php?id=" + qstid + "&tags=" + tagsString + "&titre="+qsttitle , true);
                 xhr.onload = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         console.log(xhr.response);
@@ -261,6 +272,7 @@ $id = $_SESSION['id'];
                 }
 
                 xhr.send();
+            }
             }
         </script>
         <!-- --------------------------------------------------------------- -->
@@ -314,6 +326,7 @@ $id = $_SESSION['id'];
                 showdata(page);
             });
         </script>
+   
 
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
