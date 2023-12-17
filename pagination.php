@@ -188,13 +188,18 @@ if ($row > 0) {
 
                     $output .= "<div class='flex justify-between '>
                                                     <div class='flex items-start mt-3 ml-14'>
-                                                        <div>
-                                                            <span class='inline-flex justify-center items-center w-6 h-6 rounded bg-gray-200 text-gray-800 font-medium text-sm'>
-                                                                A
-                                                            </span>
-                                                        </div>";
+                                                        <div>";
+                                                       
+                                                        if( $roww['statut_rep'] == 1){
+                                                        $output .="<svg xmlns='http://www.w3.org/2000/svg' height='16' width='14' viewBox='0 0 448 512'><path fill='#099f36' d='M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z'/></svg>";
+                                                        } else{
+                                                        $output .="<span class='inline-flex justify-center items-center w-6 h-6 rounded bg-gray-200 text-gray-800 font-medium text-sm'>
+                                                        A
+                                                    </span>";
+                                                        }
+                                                        $output .="</div>
 
-                    "<p class='ml-4 md:ml-6 text-bold'>";
+                    <p class='ml-4 md:ml-6 text-bold'>";
 
                     $output .= $roww['descrp_rep'];
 
@@ -312,7 +317,7 @@ echo $output;
         likebtn[i].addEventListener("click", e => {
             if (!requestSent) {
                 let id = document.getElementById('id_qst' + i).value;
-                console.log(id);
+
                 let likes = parseInt(likebtnint[i].innerText);
                 const xhr = new XMLHttpRequest();
                 

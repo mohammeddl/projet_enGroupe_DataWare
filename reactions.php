@@ -13,8 +13,6 @@ $sqlDelete = " DELETE FROM reactions WHERE id_user = $iduser AND id_qst = $idqst
 mysqli_query($conn, $sqlDelete);
 
 
-
-
 if ($type) {
     
         $sqlDi="INSERT INTO reactions(id_qst,id_user,dislike) values($idqst,$iduser,1)";
